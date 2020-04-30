@@ -6,7 +6,6 @@ class guessNumberPage extends StatefulWidget {
   guessNumberPage({Key key, @required this.title}) : super(key: key);
 
   String title;
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
