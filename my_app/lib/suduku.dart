@@ -1,6 +1,17 @@
+/*
+这次代码中借鉴了很多在网上搜索的 
+*/
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+// 存储点击位置
+class sudukuLocation {
+  int x;
+  int y;
+
+  sudukuLocation(int x, int y);
+}
 
 class sudukuPage extends StatefulWidget {
   sudukuPage({Key key, @required this.title}) : super(key: key);
@@ -27,6 +38,9 @@ class _sudukuPageState extends State<sudukuPage> {
 
   // 输入的数组
   List inputGameList = [];
+
+  // 表示当前选中的位置
+  final location = sudukuLocation(-1, -1);
 
   // 输入数字了
   inputNumber(String text) {}
@@ -123,9 +137,7 @@ class _sudukuPageState extends State<sudukuPage> {
     return Container(
       width: screenWidth,
       height: screenWidth,
-      decoration: BoxDecoration(
-        color: Color(0xffffffff)
-      ),
+      decoration: BoxDecoration(color: Color(0xffffffff)),
       child: Wrap(
         runAlignment: WrapAlignment.center,
         alignment: WrapAlignment.spaceEvenly,
@@ -148,7 +160,7 @@ class _sudukuPageState extends State<sudukuPage> {
         widgetList.add(Container(
           width: screenWidth / 3 - 2,
           height: screenWidth / 3 - 2,
-          child: getSubWrapView(resource),
+          child: getSubWrapView(resource, row, col),
         ));
       }
     }
@@ -156,10 +168,10 @@ class _sudukuPageState extends State<sudukuPage> {
   }
 
   // 返回小组
-  Widget getSubWrapView(List numbers) {
+  Widget getSubWrapView(List numbers, int row, int col) {
     List<Widget> widgets = [];
     for (int i = 0; i < numbers.length; i++) {
-      widgets.add(getItem(numbers[i]));
+      widgets.add(getItem(numbers[i], (3 * col) + row, i));
     }
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
@@ -168,14 +180,31 @@ class _sudukuPageState extends State<sudukuPage> {
   }
 
   // 创建单个item
-  Widget getItem(int number) {
-    return Container(
-      width: screenWidth / 9 - 1,
-      height: screenWidth / 9 - 1,
-      color: Color(0xffeeeeee), //number > 5 ? Colors.red : Colors.blue
-      child: Center(
-        child: Text(
-          number == 0 ? '' : number.toString(),
+  Widget getItem(int number, int row, int col) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          location.x = row;
+          location.y = col;
+        });
+      },
+      child: Container(
+        width: screenWidth / 9 - 1,
+        height: screenWidth / 9 - 1,
+        color: Color(0xffeeeeee),
+        child: Container(
+          color: (location.x == row && location.y == col)
+              ? Colors.blue
+              : Color(0xffeeeeee),
+          child: Center(
+            child: Text(
+              number == 0 ? '' : number.toString(),
+              style: TextStyle(
+                fontSize: 20,
+                color: Color(0xff333333),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -239,7 +268,13 @@ class _sudukuPageState extends State<sudukuPage> {
         onPressed: () {
           inputNumber(text);
         },
-        child: Text(text),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 20,
+            color: Color(0xff333333),
+          ),
+        ),
       ),
     );
   }
@@ -276,7 +311,7 @@ class _sudukuPageState extends State<sudukuPage> {
     }
     showGameList = randomMatrix;
     // 随机生成一个 10 - 20 区间的数字
-    int randomNumber = Random().nextInt(10) + 10;
+    int randomNumber = Random().nextInt(10) + 20;
     for (int i = 0; i < randomNumber; i++) {
       // 生成这次需要显示的的二维地址
       int x = Random().nextInt(8) + 1;
