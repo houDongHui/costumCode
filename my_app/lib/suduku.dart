@@ -4,14 +4,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-// 存储点击位置
-class sudukuLocation {
-  int x;
-  int y;
-
-  sudukuLocation(int x, int y);
-}
+import 'class.dart';
 
 class sudukuPage extends StatefulWidget {
   sudukuPage({Key key, @required this.title}) : super(key: key);
@@ -43,7 +36,9 @@ class _sudukuPageState extends State<sudukuPage> {
   final location = sudukuLocation(-1, -1);
 
   // 输入数字了
-  inputNumber(String text) {}
+  inputNumber(String text) {
+    
+  }
 
   @override
   Widget build(BuildContext context) {

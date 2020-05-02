@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/guessNumber.dart';
+import 'package:my_app/sodukuGetValue.dart';
 import 'package:my_app/suduku.dart';
 
 void main() => runApp(MyApp());
@@ -24,7 +25,7 @@ class homePage extends StatefulWidget {
   _homePageState createState() => _homePageState();
 }
 
-final menuList = ['猜数字', '数独'];
+final menuList = ['猜数字', '数独', '解码'];
 
 class _homePageState extends State<homePage> {
   @override
@@ -81,6 +82,15 @@ class _homePageState extends State<homePage> {
         {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return sudukuPage(
+              title: menuList[index],
+            );
+          }));
+        }
+        break;
+      case 2:
+        {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return sodukuGetValue(
               title: menuList[index],
             );
           }));
